@@ -15,6 +15,8 @@ public class BlackJackDealer extends BlackJackPlayer implements Dealer {
     // Instantiate name and money of the dealer
     super("Dealer", 1000 * 1000 * 1000);
 
+    deck = new Vector<Card>();
+
     // Add all the cards to our main deck
     for (int i = 0; i < numberOfDecks; i++) {
       for (int suit = 1; suit <= 4; suit++) {
@@ -25,6 +27,25 @@ public class BlackJackDealer extends BlackJackPlayer implements Dealer {
     }
     // And we then shuffle the deck
     this.shuffle();
+  }
+
+  /**
+   * The dealer at most casinoes has a fixed strategy as follows:
+   * Hit until total reaches 17 or above (though also hit on soft 17, which
+   * is a 17 with an ace)
+   */
+  @Override public boolean requestCard() {
+    int value = this.getValue();
+    if (value > 17) {
+      return false;
+    }
+    if (value == 17) {
+      if (this.numAces() > 0) {
+        return true;
+      }
+      return false;
+    }
+    return true;
   }
 
   private Card drawCard() {
