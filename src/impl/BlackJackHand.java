@@ -8,7 +8,7 @@ import api.Hand;
 
 public class BlackJackHand implements Hand {
 
-  private HashSet<Card> cards = new HashSet<Card>();
+  private Set<Card> cards = new HashSet<Card>();
 
   public void addCard(Card cardToAdd) {
     this.cards.add(cardToAdd);
