@@ -4,6 +4,8 @@ import api.Hand;
 import api.Card;
 import api.Player;
 
+import java.util.Set;
+
 /**
  * This intermediary class is created so as to modularize the constructors, other shared methods,
  * and make sure it is easy to change things such as the default amount of money
@@ -13,7 +15,7 @@ import api.Player;
  */
 public abstract class AbstractBlackJackPlayer implements Player {
 
-  protected Hand hand;
+  protected Hand hand = new BlackJackHand();
   protected String name;
   protected int money;
 
@@ -21,7 +23,6 @@ public abstract class AbstractBlackJackPlayer implements Player {
     this.name = playerName;
     // This will constitute the default starting money
     this.money = 1000;
-    this.hand = new BlackJackHand();
   }
 
   public AbstractBlackJackPlayer(String playerName, int startingMoney) {
@@ -64,6 +65,22 @@ public abstract class AbstractBlackJackPlayer implements Player {
 
   public int numberOfCards() {
     return this.hand.getCards().size();
+  }
+
+  // These two are my own methods
+  protected int getValue() {
+    return this.getHand().valueOf();
+  }
+
+  protected int numAces() {
+    Set<Card> cards = this.getHand().getCards();
+    int count = 0;
+    for (Card singleCard : cards) {
+      if (singleCard.getValue().getValue() == 1) {
+        count++;
+      }
+    }
+    return count;
   }
 }
 
