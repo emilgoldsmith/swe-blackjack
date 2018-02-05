@@ -8,16 +8,7 @@ import api.Hand;
 
 public class BlackJackHand implements Hand {
 
-  private HashSet<Card> cards;
-
-  /** Delete this if not needed
-  public BlackJackHand(BlackJackHand other) {
-    Set<Card> otherCards = other.getCards();
-    for (Card singleCard : otherCards) {
-      this.addCard(singleCard);
-    }
-  }
-  */
+  private HashSet<Card> cards = new HashSet<Card>();
 
   public void addCard(Card cardToAdd) {
     this.cards.add(cardToAdd);
@@ -27,28 +18,34 @@ public class BlackJackHand implements Hand {
     return Collections.unmodifiableSet(this.cards);
   }
 
+  // TODO: Do this properly if we end up not using a set
   public int compareTo(Hand other) {
     // This will make Hands of equal value equal, but I can't think of a consistent
     // way to accurately compare two Hands since Sets aren't ordered.
     return new Integer(this.valueOf()).compareTo(new Integer(other.valueOf()));
   }
 
-  // TODO: Implement this
   public boolean isValid() {
-    return true;
+    return this.valueOf() <= 21;
   }
 
-  // TODO: Find out what he means with this
   public boolean isWinner() {
-    return false;
+    return this.valueOf() == 21;
   }
 
   public int valueOf() {
-    // TODO: Remember to somehow handle ace being 1 and 11
     int total = 0;
+    int aces = 0;
     for (Card singleCard : this.cards) {
-      total += singleCard.getValue().getValue();
+      int value = singleCard.getValue().getValue();
+      if (value == 1) {
+        aces++;
+        total += 11;
+      } else {
+        total += value;
+      }
     }
+    for (; aces > 0 && total > 21; aces--, total -= 10);
     return total;
   }
 }
