@@ -17,12 +17,14 @@ public class BlackJackTable extends Table {
     this.dealer = new BlackJackDealer(numberOfDecks);
     this.wagers = new HashMap<Player, Integer>(numberOfPlayers);
     // Initialize the players
-    Random rnd = new Random();
+    Random rng = new Random();
     for (int i = 0; i < numberOfPlayers; i++) {
-      if (rnd.nextBoolean()) {
-        this.wagers.put(new BlackJackPlayer("Player " + Integer.toString(i + 1)), 0);
+      // Starting money is random number between 200 and 1000
+      int startingMoney = rng.nextInt(801) + 200;
+      if (rng.nextBoolean()) {
+        this.wagers.put(new BlackJackPlayer("Player " + Integer.toString(i + 1)), startingMoney);
       } else {
-        this.wagers.put(new AnotherBlackJackPlayer("Player " + Integer.toString(i + 1)), 0);
+        this.wagers.put(new AnotherBlackJackPlayer("Player " + Integer.toString(i + 1)), startingMoney);
       }
     }
   }
@@ -89,8 +91,6 @@ public class BlackJackTable extends Table {
     }
     return stringRepresentation.toString();
   }
-  // TODO: Make players start with different money
-  // TODO: Make all classes abstract
 
   protected void collectCards() {
     Collection<Player> players = this.getPlayers();
