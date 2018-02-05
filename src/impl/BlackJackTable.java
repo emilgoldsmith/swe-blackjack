@@ -2,11 +2,14 @@ package impl;
 
 import api.Table;
 import api.Player;
+import api.Card;
 import java.util.HashMap;
 import java.util.Random;
 import java.util.Collections;
 import java.lang.System;
 import java.util.Collection;
+import java.lang.StringBuilder;
+import java.util.Set;
 
 public class BlackJackTable extends Table {
 
@@ -42,10 +45,52 @@ public class BlackJackTable extends Table {
     return !hasPlayersLeft || !playersHaveMoneyLeft;
   }
 
-  // TODO: Implement something real here
   public String toString() {
-    return "Dummy String";
+    StringBuilder stringRepresentation = new StringBuilder();
+
+    stringRepresentation.append("Welcome to the status of the most awesome BlackJack table!\n\n");
+
+    Collection<Player> players = this.getPlayers();
+    for (Player singlePlayer : players) {
+      stringRepresentation.append(singlePlayer.getName() + ":\n");
+      stringRepresentation.append("Money left: ");
+      stringRepresentation.append(singlePlayer.getMoney());
+      stringRepresentation.append("\n");
+      stringRepresentation.append("Current wager: ");
+      stringRepresentation.append(this.wagers.get(singlePlayer));
+      stringRepresentation.append("\n");
+      Set<Card> cards = singlePlayer.getHand().getCards();
+      if (cards.size() == 0) {
+        stringRepresentation.append("Player currently has no cards\n");
+      } else {
+        stringRepresentation.append("Current cards:");
+        for (Card singleCard : cards) {
+          stringRepresentation.append(
+            " " + singleCard.getValue().name().toLowerCase() +
+            " of " + singleCard.getSuit().name().toLowerCase() + "s"
+          );
+        }
+        stringRepresentation.append("\n");
+      }
+    }
+    stringRepresentation.append("Dealer:\n");
+    Set<Card> cards = this.dealer.getHand().getCards();
+    if (cards.size() == 0) {
+      stringRepresentation.append("Dealer currently has no cards\n");
+    } else {
+      stringRepresentation.append("Current cards:");
+      for (Card singleCard : cards) {
+        stringRepresentation.append(
+          " " + singleCard.getValue().name().toLowerCase() +
+          " of " + singleCard.getSuit().name().toLowerCase() + "s"
+        );
+      }
+      stringRepresentation.append("\n");
+    }
+    return stringRepresentation.toString();
   }
+  // TODO: Make players start with different money
+  // TODO: Make all classes abstract
 
   protected void collectCards() {
     Collection<Player> players = this.getPlayers();
@@ -57,11 +102,16 @@ public class BlackJackTable extends Table {
   }
 
   protected void dealTable() {
+    // Remember to always shuffle before dealing
+    this.dealer.shuffle();
     Collection<Player> players = this.getPlayers();
     // Deal 2 cards to each player
     for (int i = 0; i < 2; i++) {
       for (Player singlePlayer : players) {
-        this.dealer.dealCard(singlePlayer);
+        if (this.wagers.get(singlePlayer) > 0) {
+          // Only deal them in if they made a bet
+          this.dealer.dealCard(singlePlayer);
+        }
       }
       this.dealer.dealCard((Player)this.dealer);
     }
@@ -70,21 +120,33 @@ public class BlackJackTable extends Table {
   protected void collectBets() {
     Collection<Player> players = this.getPlayers();
     for (Player singlePlayer : players) {
-      this.wagers.put(singlePlayer, singlePlayer.placeWager());
+      if (singlePlayer.getMoney() > 0) {
+        // Only ask them for a wager if they have something to bet
+        this.wagers.put(singlePlayer, singlePlayer.placeWager());
+      }
     }
+    // Dealer doesn't bet
   }
 
-  // TODO: Make sure you stop after someone has busted
   protected void playerTurns() {
     Collection<Player> players = this.getPlayers();
     for (Player singlePlayer : players) {
-      while (singlePlayer.requestCard()) {
+      while (
+          this.wagers.get(singlePlayer) > 0 &&
+          singlePlayer.getHand().isValid() &&
+          !singlePlayer.getHand().isWinner() &&
+          singlePlayer.requestCard()
+      ) {
         this.dealer.dealCard(singlePlayer);
       }
     }
     // Dealer always plays last
     Player playerDealer = (Player)this.dealer;
-    while (playerDealer.requestCard()) {
+    while (
+        playerDealer.getHand().isValid() &&
+        !playerDealer.getHand().isWinner() &&
+        playerDealer.requestCard()
+    ) {
       this.dealer.dealCard(playerDealer);
     }
   }
@@ -94,6 +156,9 @@ public class BlackJackTable extends Table {
     Collection<Player> players = this.getPlayers();
     int winningFactor = 2;
     for (Player singlePlayer : players) {
+      // Ignore them if they didn't bet anything
+      if (this.wagers.get(singlePlayer) == 0) continue;
+
       int score = singlePlayer.getHand().valueOf();
       if (score > 21) {
         // You lose no matter what, even if dealer busts
