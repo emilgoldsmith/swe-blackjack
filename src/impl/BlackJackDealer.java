@@ -6,7 +6,6 @@ import api.Player;
 import java.util.Vector;
 import java.util.Collections;
 
-/* TODO: Override the hit function here to the "normal" dealer rules */
 public class BlackJackDealer extends BlackJackPlayer implements Dealer {
 
   private Vector<Card> deck;

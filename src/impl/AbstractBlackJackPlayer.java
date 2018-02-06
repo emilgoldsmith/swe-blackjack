@@ -4,8 +4,6 @@ import api.Hand;
 import api.Card;
 import api.Player;
 
-import java.util.Set;
-
 /**
  * This intermediary class is created so as to modularize the constructors, other shared methods,
  * and make sure it is easy to change things such as the default amount of money
@@ -73,14 +71,8 @@ public abstract class AbstractBlackJackPlayer implements Player {
   }
 
   protected int numAces() {
-    Set<Card> cards = this.getHand().getCards();
-    int count = 0;
-    for (Card singleCard : cards) {
-      if (singleCard.getValue().getValue() == 1) {
-        count++;
-      }
-    }
-    return count;
+    BlackJackHand extendedHand = (BlackJackHand)hand;
+    return extendedHand.numAces();
   }
 }
 

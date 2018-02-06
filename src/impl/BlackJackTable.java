@@ -9,7 +9,7 @@ import java.util.Collections;
 import java.lang.System;
 import java.util.Collection;
 import java.lang.StringBuilder;
-import java.util.Set;
+import java.util.List;
 
 public class BlackJackTable extends Table {
 
@@ -61,7 +61,7 @@ public class BlackJackTable extends Table {
       stringRepresentation.append("Current wager: ");
       stringRepresentation.append(this.wagers.get(singlePlayer));
       stringRepresentation.append("\n");
-      Set<Card> cards = singlePlayer.getHand().getCards();
+      List<Card> cards = singlePlayer.getHand().getCards();
       if (cards.size() == 0) {
         stringRepresentation.append("Player currently has no cards\n");
       } else {
@@ -76,7 +76,7 @@ public class BlackJackTable extends Table {
       }
     }
     stringRepresentation.append("Dealer:\n");
-    Set<Card> cards = this.dealer.getHand().getCards();
+    List<Card> cards = this.dealer.getHand().getCards();
     if (cards.size() == 0) {
       stringRepresentation.append("Dealer currently has no cards\n");
     } else {
