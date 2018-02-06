@@ -1,6 +1,6 @@
 package api;
 
-import java.util.Set;
+import java.util.List;
 import java.lang.Comparable;
 
 /*
@@ -15,7 +15,7 @@ public interface Hand extends Comparable<Hand> {
     /*
      * Returns a collection of cards that is read-only.
      */
-    public Set<Card> getCards();
+    public List<Card> getCards();
 
     /*
      * Determination of valid and winning hands, respectively. Your
@@ -23,12 +23,12 @@ public interface Hand extends Comparable<Hand> {
      * rules of Black Jack, but irrespective of what other players at
      * the table have (including the dealer).
      */
-    public abstract boolean isValid();
-    public abstract boolean isWinner();
+    public boolean isValid();
+    public boolean isWinner();
 
     /*
      * The value of the hand, as an integer. This value should be
      * based on the "value" of the cards in this hand.
      */
-    public abstract int valueOf();
+    public int valueOf();
 }

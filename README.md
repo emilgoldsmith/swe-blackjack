@@ -56,7 +56,7 @@ defined in your `impl` directory.
 
 ## Class layout
 
-Package | Class | Implements | Extends
+Package | Class<sup>*</sup> | Implements | Extends
 --- | --- | --- | ---
 api | Table | |
 | | Hand | Comparable |
@@ -64,10 +64,13 @@ api | Table | |
 | | Dealer | |
 | | Player | Comparable |
 impl | BlackJackTable | | Table
-| | BlackJackHand | | Hand
+| | BlackJackHand | Hand |
 | | BlackJackPlayer | Player |
 | | AnotherBlackJackPlayer | Player |
 | | BlackJackDealer | Dealer | BlackJackPlayer
+
+<sup>*</sup>"Class" is used as a catch-all for interfaces, abstract
+classes, and classes.
 
 ### Summary
 

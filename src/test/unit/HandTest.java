@@ -1,6 +1,6 @@
 package test.unit;
 
-import java.util.Set;
+import java.util.List;
 
 import org.junit.Test;
 import org.junit.Before;
@@ -23,7 +23,7 @@ public class HandTest {
 
     @Test(expected = UnsupportedOperationException.class)
     public void testCardsReadOnly() {
-        Set<Card> cards = hand.getCards();
+        List<Card> cards = hand.getCards();
         cards.add(new Card(Card.Value.ACE, Card.Suit.CLUB));
     }
 
