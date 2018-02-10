@@ -10,13 +10,13 @@ import strategies.CautiousHittingStrategy;
 
 public class BlackJackPlayer implements Player {
 
-  private Hand hand = new BlackJackHand();
-  private String name;
-  private int money;
-  private BettingStrategy bettingStrategy;
-  private HittingStrategy hittingStrategy;
+  protected Hand hand = new BlackJackHand();
+  protected String name;
+  protected int money;
+  protected BettingStrategy bettingStrategy;
+  protected HittingStrategy hittingStrategy;
 
-  private void setDefaultStrategies() {
+  protected void setDefaultStrategies() {
     this.bettingStrategy = new CautiousBettingStrategy();
     this.hittingStrategy = new CautiousHittingStrategy();
   }
@@ -90,11 +90,11 @@ public class BlackJackPlayer implements Player {
   }
 
   // These two are my own methods
-  private int getValue() {
+  protected int getValue() {
     return this.getHand().valueOf();
   }
 
-  private int numAces() {
+  protected int numAces() {
     BlackJackHand extendedHand = (BlackJackHand)hand;
     return extendedHand.numAces();
   }
