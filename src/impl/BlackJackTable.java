@@ -22,9 +22,9 @@ public class BlackJackTable extends Table {
       // Starting money is random number between 200 and 1000
       int startingMoney = rng.nextInt(801) + 200;
       if (rng.nextBoolean()) {
-        this.wagers.put(new BlackJackPlayer("Player " + Integer.toString(i + 1)), startingMoney);
+        this.wagers.put(new BlackJackPlayer("Player " + Integer.toString(i + 1), startingMoney), 0);
       } else {
-        this.wagers.put(new AnotherBlackJackPlayer("Player " + Integer.toString(i + 1)), startingMoney);
+        this.wagers.put(new AnotherBlackJackPlayer("Player " + Integer.toString(i + 1), startingMoney), 0);
       }
     }
   }
