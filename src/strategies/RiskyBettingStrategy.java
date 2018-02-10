@@ -6,16 +6,14 @@ public class RiskyBettingStrategy extends BettingStrategy {
 
   private Random rng = new Random();
 
-  public int bet() {
+  public int bet(int moneyLeft) {
     double factor = rng.nextDouble() / 2 + 0.25;
 
-    int bid = (int) (factor * this.money);
-    if (bid == 0 && this.money > 0) {
+    int bid = (int) (factor * moneyLeft);
+    if (bid == 0 && moneyLeft > 0) {
       // If we have something to bid we should
       bid = 1;
     }
-    // Actually place the wager
-    this.money -= bid;
     return bid;
   }
 }

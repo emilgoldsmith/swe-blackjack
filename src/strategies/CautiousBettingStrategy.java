@@ -9,13 +9,11 @@ public class CautiousBettingStrategy extends BettingStrategy {
   public int bet() {
     double factor = rng.nextDouble() / 8 + 0.80;
 
-    int bid = (int)(factor * this.money);
-    if (bid == 0 && this.money > 0) {
+    int bid = (int)(factor * moneyLeft);
+    if (bid == 0 && moneyLeft > 0) {
       // If we have something to bid we should
       bid = 1;
     }
-    // Actually place the wager
-    this.money -= bid;
     return bid;
   }
 }

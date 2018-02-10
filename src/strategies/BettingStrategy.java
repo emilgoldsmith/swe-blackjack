@@ -1,5 +1,5 @@
 package strategies;
 
 public interface BettingStrategy {
-    public int bet();
+    public int bet(int moneyLeft);
 }
