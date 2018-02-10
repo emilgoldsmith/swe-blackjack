@@ -2,11 +2,11 @@ package strategies;
 
 import java.util.Random;
 
-public class CautiousBettingStrategy extends BettingStrategy {
+public class CautiousBettingStrategy implements BettingStrategy {
 
   private Random rng = new Random();
 
-  public int bet() {
+  public int bet(int moneyLeft) {
     double factor = rng.nextDouble() / 8 + 0.80;
 
     int bid = (int)(factor * moneyLeft);

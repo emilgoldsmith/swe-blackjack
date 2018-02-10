@@ -2,7 +2,7 @@ package strategies;
 
 import java.util.Random;
 
-public class RiskyBettingStrategy extends BettingStrategy {
+public class RiskyBettingStrategy implements BettingStrategy {
 
   private Random rng = new Random();
 

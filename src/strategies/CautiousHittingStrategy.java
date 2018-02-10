@@ -2,7 +2,7 @@ package strategies;
 
 import api.Hand;
 
-public class CautiousHittingStrategy extends HittingStrategy {
+public class CautiousHittingStrategy implements HittingStrategy {
   public boolean shouldHit(Hand hand, int numAces, int value) {
     if (numAces > 0) {
       // If we haven't lost yet and we have an ace it's impossible to lose

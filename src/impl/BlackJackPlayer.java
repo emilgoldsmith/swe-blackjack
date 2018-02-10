@@ -1,45 +1,102 @@
 package impl;
 
-import java.util.Random;
+import api.Hand;
+import api.Card;
+import api.Player;
+import strategies.HittingStrategy;
+import strategies.BettingStrategy;
+import strategies.CautiousBettingStrategy;
+import strategies.CautiousHittingStrategy;
 
-public class BlackJackPlayer extends AbstractBlackJackPlayer {
+public class BlackJackPlayer implements Player {
 
-  private Random rng = new Random();
+  private Hand hand = new BlackJackHand();
+  private String name;
+  private int money;
+  private BettingStrategy bettingStrategy;
+  private HittingStrategy hittingStrategy;
+
+  private void setDefaultStrategies() {
+    this.bettingStrategy = new CautiousBettingStrategy();
+    this.hittingStrategy = new CautiousHittingStrategy();
+  }
 
   public BlackJackPlayer(String playerName) {
-    super(playerName);
+    this.name = playerName;
+    // This will constitute the default starting money
+    this.money = 1000;
+    this.setDefaultStrategies();
   }
 
   public BlackJackPlayer(String playerName, int startingMoney) {
-    super(playerName, startingMoney);
+    this.name = playerName;
+    this.money = startingMoney;
+    this.setDefaultStrategies();
+  }
+
+  public void setBettingStrategy(BettingStrategy strat) {
+    this.bettingStrategy = strat;
+  }
+
+  public void setHittingStrategy(HittingStrategy strat) {
+    this.hittingStrategy = strat;
+  }
+
+  public int compareTo(Player other) {
+    return this.name.compareTo(other.getName());
+  }
+
+  public Hand getHand() {
+    return this.hand;
+  }
+
+  public void receive(Card card) {
+    this.hand.addCard(card);
+  }
+
+  public Hand relinquishCards() {
+    // This passing around by reference works because we reassign hand to a new pointer
+    Hand oldHand = hand;
+    this.hand = new BlackJackHand();
+    return oldHand;
+  }
+
+  public void payOut(int winnings) {
+    this.money += winnings;
+  }
+
+  public int getMoney() {
+    // We put our checks that money never becomes negative in the places where logic
+    // that alters the amount of money left is written
+    return this.money;
+  }
+
+  public String getName() {
+    return this.name;
+  }
+
+  public int numberOfCards() {
+    return this.hand.getCards().size();
   }
 
   public int placeWager() {
-    // This player likes to bet big! (between 25 to 75% of his money)
-    double factor = rng.nextDouble() / 2 + 0.25;
-
-    int bid = (int)(factor * this.money);
-    if (bid == 0 && this.money > 0) {
-      // If we have something to bid we should
-      bid = 1;
-    }
-    // Actually place the wager
+    int bid = this.bettingStrategy.bet(this.money);
     this.money -= bid;
     return bid;
   }
 
   public boolean requestCard() {
-    // This player is very cautious
-    if (this.numAces() > 0) {
-      // If we haven't lost yet and we have an ace it's impossible to lose
-      return true;
-    }
-    if (this.getValue() > 11) {
-      // We have no aces and we could lose on the next turn so we are cautious
-      // and want to make sure we don't bust
-      return false;
-    }
-    // We have 11 or less so we can hit without risk
-    return true;
+    return this.hittingStrategy.shouldHit(this.hand, this.numAces(), this.getValue());
+  }
+
+  // These two are my own methods
+  private int getValue() {
+    return this.getHand().valueOf();
+  }
+
+  private int numAces() {
+    BlackJackHand extendedHand = (BlackJackHand)hand;
+    return extendedHand.numAces();
   }
 }
+

@@ -2,8 +2,8 @@ package strategies;
 
 import api.Hand;
 
-public class AggressiveHittingStrategy extends HittingStrategy {
-  public shouldHit(Hand hand, int numAces, int value) {
+public class AggressiveHittingStrategy implements HittingStrategy {
+  public boolean shouldHit(Hand hand, int numAces, int value) {
     if (value < 21) {
       return true;
     }
