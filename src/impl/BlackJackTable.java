@@ -29,6 +29,14 @@ public class BlackJackTable extends Table {
     }
   }
 
+  public BlackJackTable(Collection<Player> players, int numberOfDecks) {
+    this.dealer = new BlackJackDealer(numberOfDecks);
+    this.wagers = new HashMap<Player, Integer>();
+    for (Player singlePlayer : players) {
+      this.wagers.put(singlePlayer, 0);
+    }
+  }
+
   public Collection<Player> getPlayers() {
     // Make it read only as per the specification
     return Collections.unmodifiableSet(this.wagers.keySet());
