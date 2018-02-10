@@ -15,7 +15,7 @@ package api;
  *   3. The number next to each constant (ACE(1), for example)
  *      represents that contants value. That value can be accessed
  *      using Card.getValue: If you have a variable x of type Card
- *      that represents an ACE, x.getValue() will return 1.
+ *      that represents an ACE, x.getValue().getValue() will return 1.
  */
 public class Card implements Comparable<Card> {
     public enum Value {

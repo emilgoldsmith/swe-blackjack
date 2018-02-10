@@ -22,7 +22,7 @@ public class BlackJackGame {
         }
 
         int numberOfPlayers = Integer.parseInt(args[0]);
-        int decks = (args.length > 2) ? Integer.parseInt(args[1]) : 1;
+        int decks = (args.length > 1) ? Integer.parseInt(args[1]) : 1;
 
         Table table = new BlackJackTable(numberOfPlayers, decks);
 

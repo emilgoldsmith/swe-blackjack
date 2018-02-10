@@ -66,6 +66,15 @@
     </java>
   </target>
 
+  <target name="strategy-test" depends="compile">
+    <java fork="true" classname="test.system.BlackJackStrategyGame">
+      <jvmarg value="-enableassertions"/>
+      <classpath refid="cpath"/>
+      <arg value="${players}"/>
+      <arg value="${decks}"/>
+    </java>
+  </target>
+
   <target name="unit-test" depends="compile" >
     <junit showoutput="true"
            printsummary="yes"

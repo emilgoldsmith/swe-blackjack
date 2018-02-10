@@ -8,6 +8,7 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 
 import api.Table;
 import api.Player;
@@ -33,5 +34,12 @@ public class TableTest {
         Table table = new BlackJackTable(10, 1);
         Collection<Player> players = table.getPlayers();
         players.add(new BlackJackPlayer("Player 1", 0));
+    }
+
+    @Test
+    public void testPlayerConstructorExists() {
+        Collection<Player> players = new ArrayList<Player>();
+        Table table = new BlackJackTable(players, 1);
+        assertNotNull(table);
     }
 }
