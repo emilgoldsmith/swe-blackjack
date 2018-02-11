@@ -3,8 +3,10 @@ package impl;
 import api.Dealer;
 import api.Card;
 import api.Player;
+import strategies.HouseHittingStrategy;
 import java.util.Vector;
 import java.util.Collections;
+import java.lang.RuntimeException;
 
 public class BlackJackDealer extends BlackJackPlayer implements Dealer {
 
@@ -26,25 +28,16 @@ public class BlackJackDealer extends BlackJackPlayer implements Dealer {
     }
     // And we then shuffle the deck
     this.shuffle();
+
+    // Setup the house hitting strategy, we don't setup bidding strategy
+    // since the dealer never bets
+    hittingStrategy = new HouseHittingStrategy();
   }
 
-  /**
-   * The dealer at most casinoes has a fixed strategy as follows:
-   * Hit until total reaches 17 or above (though also hit on soft 17, which
-   * is a 17 with an ace)
-   */
-  @Override public boolean requestCard() {
-    int value = this.getValue();
-    if (value > 17) {
-      return false;
-    }
-    if (value == 17) {
-      if (this.numAces() > 0) {
-        return true;
-      }
-      return false;
-    }
-    return true;
+  @Override
+  public int placeWager() {
+    // This function should never be called on the dealer as (s)he doesn't bid
+    throw new RuntimeException("Dealer can't place wager");
   }
 
   private Card drawCard() {
