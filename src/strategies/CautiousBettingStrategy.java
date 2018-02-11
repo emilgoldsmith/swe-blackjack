@@ -7,7 +7,7 @@ public class CautiousBettingStrategy implements BettingStrategy {
   private Random rng = new Random();
 
   public int bet(int moneyLeft) {
-    double factor = rng.nextDouble() / 8 + 0.80;
+    double factor = rng.nextDouble() / 8;
 
     int bid = (int)(factor * moneyLeft);
     if (bid == 0 && moneyLeft > 0) {
